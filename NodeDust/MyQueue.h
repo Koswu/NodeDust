@@ -1,5 +1,5 @@
 #ifndef MYQUEUE_H_
-#define MYQUEUE_H
+#define MYQUEUE_H_
 class MyQueue {
   private:
     int _size;
@@ -52,11 +52,7 @@ class MyQueue {
       {
         return -1;
       }
-      int index = _rear - 1;
-      if (index < 0)
-      {
-          index += _capacity;                                                                                           
-      }
+      int index = _rear - 1 < 0 ? _rear - 1 + _capacity : _rear - 1;
       return _arr[index];
     }
     void pop() {
@@ -65,6 +61,7 @@ class MyQueue {
         return;
       }
       _front++;
+      _front = _front >= _capacity ? _front - _capacity : _front;
       if (_front >= _capacity)
       {
         _front -= _capacity;
@@ -78,10 +75,7 @@ class MyQueue {
       }
       _arr[_rear] = val;
       _rear++;
-      if (_rear >= _capacity)
-      {
-        _rear -= _capacity;
-      }
+      _rear = _rear >= _capacity ? _rear - _capacity : _rear;
     }
 };
-#endif 
+#endif

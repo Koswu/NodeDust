@@ -4,25 +4,33 @@
 #include <ESP8266WebServer.h>
 #include <ESP8266mDNS.h>
 #include "MyQueue.h"
+
 //PIN Defination
 #define DUST_PIN A0
 #define LED_POWER_PIN D2
 #define LED_BUILTIN D4
+
 //Sensor value min
 #define DUST_MIN_VAL 37
+
 //queue capacity
 #define QUALITY_QUEUE_CAPACITY 100
+
 //WIFI config
 const char* WIFI_SSID = "YOUR_SSID";
 const char* WIFI_PASSWORD = "YOUR_PASSWORD";
+
 //delay time
 const int LED_PULSE_TIME = 280;
 const int LED_PULSE_TIME2 = 40;
 const float OFF_TIME = 9680;
+
 //float val
 const double DOUBLE_INF = 1.0 / 0;
+
 //status
 bool need_check_dust = true;
+
 //history data queue
 MyQueue quality_que(QUALITY_QUEUE_CAPACITY);
 
@@ -45,13 +53,13 @@ void setDustCheck() {
 void setup() {
   //init
   pinMode(LED_POWER_PIN, OUTPUT);
-  digitalWrite(LED_POWER_PIN, LOW);
+  digitalWrite(LED_POWER_PIN, HIGH);//power off the led
   pinMode(DUST_PIN, INPUT);
   digitalWrite(DUST_PIN, LOW);
   pinMode(LED_BUILTIN, OUTPUT);
   Serial.begin(115200);
   //connect to WIFI
-  digitalWrite(LED_BUILTIN, HIGH);
+  digitalWrite(LED_BUILTIN, HIGH);//power off the led
   WiFi.mode(WIFI_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
   Serial.println();
@@ -147,20 +155,20 @@ void handleRoot()
   String quality_level;
   if (air_quality < 75)
   {
-    quality_level ="非常好";
-  }else if (air_quality < 150)
+    quality_level = "非常好";
+  } else if (air_quality < 150)
   {
-    quality_level ="很好";
-  }else if (air_quality < 300)
+    quality_level = "很好";
+  } else if (air_quality < 300)
   {
-    quality_level ="好";
-  }else if (air_quality < 1050)
+    quality_level = "好";
+  } else if (air_quality < 1050)
   {
-    quality_level ="一般";
-  }else if (air_quality < 3000)
+    quality_level = "一般";
+  } else if (air_quality < 3000)
   {
-    quality_level ="差";
-  }else
+    quality_level = "差";
+  } else
   {
     quality_level = "很差";
   }
@@ -232,13 +240,13 @@ void drawGraph() {
   const double *que_ptr = quality_que.getArr();
   int que_front = quality_que.getFront();
   int prev = que_front;
-  for (int i = (que_front + 1) % QUALITY_QUEUE_CAPACITY, x = 0;i != que_front;i=(i+1)%QUALITY_QUEUE_CAPACITY)
+  for (int i = (que_front + 1) % QUALITY_QUEUE_CAPACITY, x = 0; i != que_front; i = (i + 1) % QUALITY_QUEUE_CAPACITY)
   {
     //Serial.println(i);
-    sprintf(temp, "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke-width=\"1\" />\n", x, 450 - int(que_ptr[prev]/10+0.5), x + 45, 450 - int(que_ptr[i]/10+0.5));
+    sprintf(temp, "<line x1=\"%d\" y1=\"%d\" x2=\"%d\" y2=\"%d\" stroke-width=\"1\" />\n", x, 450 - int(que_ptr[prev] / 10 + 0.5), x + 45, 450 - int(que_ptr[i] / 10 + 0.5));
     out += temp;
     prev = i;
-    x+=45;
+    x += 45;
   }
   //Serial.println(que_front);
   out += "</g>\n</svg>\n";
