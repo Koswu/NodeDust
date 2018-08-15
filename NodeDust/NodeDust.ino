@@ -151,40 +151,40 @@ void handleRoot()
   int min = sec / 60;
   int hr = min / 60;
   double air_quality = quality_que.rear();
-  String title = air_quality < 0 ? "传感器错误" : "现在的空气质量数值为:" + String(air_quality);
+  String title = air_quality < 0 ? "Sensor Error" : "Now Air Quality Value is:" + String(air_quality);
   String quality_level;
   if (air_quality < 75)
   {
-    quality_level = "非常好";
+    quality_level = "Excellent";
   } else if (air_quality < 150)
   {
-    quality_level = "很好";
+    quality_level = "Very good";
   } else if (air_quality < 300)
   {
-    quality_level = "好";
+    quality_level = "Good";
   } else if (air_quality < 1050)
   {
-    quality_level = "一般";
+    quality_level = "Normal";
   } else if (air_quality < 3000)
   {
-    quality_level = "差";
+    quality_level = "Bad";
   } else
   {
-    quality_level = "很差";
+    quality_level = "Very Bad";
   }
   String context = "<!DOCTYPE html>\n<html>\
   <head>\
     <meta charset='utf-8' http-equiv='refresh' content='5'/>\
-    <title>空气质量检测</title>\
+    <title>Air Quality Detection</title>\
     <style>\
       body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
     </style>\
   </head>\
   <body>\
     <h1>" + title + "</h1>\
-    <h2>空气质量级别为：" + quality_level + "</h2>\
+    <h2>Air quality level is:" + quality_level + "</h2>\
     <img src='/monitor.svg' />\
-    <h3>近期空气质量走势图</h3>\
+    <h3>Graph of recent value</h3>\
     <p>Uptime: %02d:%02d:%02d</p>\
   </body>\
 </html>";
@@ -203,13 +203,13 @@ void handleNotFound() {
   message += "<!DOCTYPE html>\n<html>\
   <head>\
     <meta charset='utf-8'/>\
-    <title>诶呀！出错了！</title>\
+    <title>Opos!Something Wrong!</title>\
     <style>\
       body { background-color: #cccccc; font-family: Arial, Helvetica, Sans-Serif; Color: #000088; }\
     </style>\
   </head>\
   <body>\
-    <h1>好像没有你要访问的页面呀</h1>\
+    <h1>Not found the page which you request</h1>\
     <p>";
   message += "URI: ";
   message += server.uri();
